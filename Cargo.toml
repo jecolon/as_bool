@@ -6,7 +6,6 @@ edition = "2018"
 description = "Define how a type should be represented in a boolean context."
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/jecolon/as_bool"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+documentation = "https://docs.rs/as_bool/0.1.1/as_bool/"
 
 [dependencies]
