@@ -1,6 +1,6 @@
 [package]
 name = "as_bool"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Jose Colon Rodriguez <jec.rod@gmail.com>"]
 edition = "2018"
 description = "Define how a type should be represented in a boolean context."
