@@ -1,10 +1,11 @@
 //! as_bool provides an expanded notion of what is *true* and what is *false*.
-//! Specifically, we provide the AsBool trait, which an implementing type can
+//!
+//! Specifically with the AsBool trait, which an implementing type can
 //! use to express how it should be represented in a boolean context.
 //!
-//! This crate also provides implementations for Rust's builtin types 
+//! This crate also provides implementations of AsBool for Rust's builtin types
 //! and collections from the Standard Library. These implementations provide a
-//! truth table similar to the *Groovy Truth* implemented in the Groovy 
+//! truth table similar to the *Groovy Truth* implemented in the Groovy
 //! programming language. The truth table can be described as follow:
 //!
 //! * booleans behave as expected.
@@ -18,11 +19,10 @@
 //! * `Err` is always `false`.
 //! * `Ok` and `Some` are unwrapped and the contained item is evaluated according
 //! to the preceding rules.
-use std::collections::{
-    BinaryHeap, BTreeSet, BTreeMap, HashMap, HashSet, LinkedList, VecDeque
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
-/// AsBool defines a type's behavior in a boolean context.
+/// `AsBool` defines a type's behavior in a boolean context. Basically, it converts
+/// the implementing type to `bool`.
 pub trait AsBool {
     fn as_bool(&self) -> bool;
 }
@@ -126,7 +126,7 @@ impl AsBool for () {
 // Arrays
 impl<T> AsBool for [T] {
     fn as_bool(&self) -> bool {
-        self.len() > 0
+        !self.is_empty()
     }
 }
 
@@ -175,7 +175,7 @@ impl<T> AsBool for BinaryHeap<T> {
 // Text
 impl AsBool for char {
     fn as_bool(&self) -> bool {
-        !(*self == '\0')
+        *self != '\0'
     }
 }
 impl AsBool for &str {
@@ -214,10 +214,10 @@ impl<T: AsBool, E> AsBool for std::result::Result<T, E> {
 // Tests
 #[cfg(test)]
 mod tests {
-    use std::collections::{
-        BinaryHeap, BTreeSet, BTreeMap, HashMap, HashSet, LinkedList, VecDeque
-    };
     use crate::AsBool;
+    use std::collections::{
+        BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque,
+    };
 
     #[test]
     fn the_works() {
@@ -263,7 +263,7 @@ mod tests {
         assert!(!().as_bool());
         assert!(![true; 0].as_bool());
         assert!([true; 1].as_bool());
-        
+
         let mut hm: HashMap<u8, bool> = HashMap::new();
         assert!(!hm.as_bool());
         hm.insert(1, true);
